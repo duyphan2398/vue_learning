@@ -13,6 +13,20 @@
             <input type="email" class="form-control" id="mail" v-model="newUser.mail">
         </div>
 
+        <template v-if="$route.name === 'userCreate'">
+            <div class="form-group">
+                <label for="password">Pasword</label>
+                <input type="password" class="form-control" id="password" v-model="newUser.login_password">
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Password Confirmation</label>
+                <input type="password"
+                       class="form-control"
+                       id="password_confirmation"
+                       v-model="newUser.login_password_confirmation">
+            </div>
+        </template>
+
         <div class="form-group">
             <button type="submit" class="btn btn-outline-primary"> Submit</button>
         </div>
@@ -29,7 +43,9 @@
                 newUser: {
                     login_id: '',
                     nickname: '',
-                    mail: ''
+                    mail: '',
+                    login_password: '',
+                    login_password_confirmation: ''
                 }
             }
         },
@@ -42,8 +58,12 @@
         methods: {
             submit() {
                 let data = this.newUser;
+                data.gender = 1;
+                data.is_active = 1;
                 if (this.$route.name === 'userEdit') {
                     this.update(data);
+                }else{
+                    this.create(data);
                 }
             },
             async update(data) {
@@ -55,10 +75,10 @@
                     }).then(async () => {
                     this.$notification.success({
                         message: 'Successfully',
-                        description:'Update Successfully',
-                        placement : 'topRight',
-                        duration : 1,
-                        style : {
+                        description: 'Update Successfully',
+                        placement: 'topRight',
+                        duration: 1,
+                        style: {
                             'background': "#ca7474",
                             'font-size': 'large',
                             'width': '50%'
@@ -68,8 +88,35 @@
                 }).catch(() => {
                     this.$notification.error({
                         message: 'Fail',
-                        description:'Update Fail',
-                        placement : 'topRight'
+                        description: 'Update Fail',
+                        placement: 'topRight'
+                    })
+                })
+            },
+            async create(data){
+                await apiService.post('users',
+                    data, {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        }
+                    }).then(async () => {
+                    this.$notification.success({
+                        message: 'Successfully',
+                        description: 'Create Successfully',
+                        placement: 'topRight',
+                        duration: 1,
+                        style: {
+                            'background': "#ca7474",
+                            'font-size': 'large',
+                            'width': '50%'
+                        }
+                    });
+                    await this.$router.push({name: 'userIndex'})
+                }).catch(() => {
+                    this.$notification.error({
+                        message: 'Fail',
+                        description: 'Create Fail',
+                        placement: 'topRight'
                     })
                 })
             }

@@ -83,12 +83,25 @@
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
                     }
-                }).then(() => {
+                }).then(async () => {
                     this.$notification.success({
                         message: 'Successfully',
                         description:'Delete Successfully',
                         placement : 'topRight'
                     });
+
+                    await apiService.get('users', {
+                        params: {
+                            per_page: 0,
+                            'include': 'prefecture',
+                            'sortBy[updated_at]': 'desc'
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        }
+                    }).then((res) => {
+                        this.userList = res.data.data
+                    })
                 }).catch(()=>{
                     this.$notification.error({
                         message: 'Fail',
