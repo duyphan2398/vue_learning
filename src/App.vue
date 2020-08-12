@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid">
-      <Nav></Nav>
+        <Nav></Nav>
         <div class="row">
             <div class="col">
-                    <router-view></router-view>
+                <router-view></router-view>
             </div>
         </div>
 

@@ -58,9 +58,8 @@
                         login_id: this.login_id,
                         login_password: this.login_password
                     }).then((res) => {
-                        localStorage.setItem('token', res.data.token);
+                        this.$store.commit('SET_TOKEN', res.data.token)
                     });
-
                     await this.$router.push({name: 'home'});
                 } catch (e) {
                     this.login_id = '';

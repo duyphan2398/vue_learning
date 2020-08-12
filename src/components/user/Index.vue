@@ -5,7 +5,7 @@
                 tag="button"
                 :to="{name: 'userCreate'}"
                 v-bind:class="{btn :true, 'btn-success' : true, 'mb-2': true}"
-                >Create User
+        >Create User
         </router-link>
         <table class="table table-striped">
             <thead>
@@ -50,6 +50,7 @@
 
 <script>
     import {apiService} from "../../services/api.service";
+    import {store} from "../../store/store";
 
     export default {
         name: "Index",
@@ -66,7 +67,7 @@
                     'sortBy[updated_at]': 'desc'
                 },
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + store.getters.token
                 }
             }).then((res) => {
                 return next((vm) => {
@@ -76,20 +77,19 @@
         },
         methods: {
             handleEdit(id) {
-                this.$router.push('user/'+id)
+                this.$router.push('user/' + id)
             },
             async handleDelete(id) {
                 await apiService.delete('users/' + id, {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        'Authorization': 'Bearer ' + store.getters.token
                     }
                 }).then(async () => {
                     this.$notification.success({
                         message: 'Successfully',
-                        description:'Delete Successfully',
-                        placement : 'topRight'
+                        description: 'Delete Successfully',
+                        placement: 'topRight'
                     });
-
                     await apiService.get('users', {
                         params: {
                             per_page: 0,
@@ -97,16 +97,16 @@
                             'sortBy[updated_at]': 'desc'
                         },
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            'Authorization': 'Bearer ' + store.getters.token
                         }
                     }).then((res) => {
                         this.userList = res.data.data
                     })
-                }).catch(()=>{
+                }).catch(() => {
                     this.$notification.error({
                         message: 'Fail',
-                        description:'Delete Fail',
-                        placement : 'topRight'
+                        description: 'Delete Fail',
+                        placement: 'topRight'
                     });
                 })
             }

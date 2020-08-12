@@ -1,7 +1,9 @@
-export const AuthGuard = async (to, from, next) => {
-    if (localStorage.getItem('token')) {
+import {store} from '../store/store';
+
+export const AuthGuard = (to, from, next) => {
+    if (store.getters.token) {
         next();
-    }else {
-        next({name : 'login'});
+    } else {
+        next({name: 'login'});
     }
 }

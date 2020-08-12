@@ -9,40 +9,40 @@ import Create from "./components/user/Create";
 export const routes = [
     //login
     {
-      path : '/login',
-      name : 'login',
-      component : Login,
-      beforeEnter: LoginGuard
+        path: '/login',
+        name: 'login',
+        component: Login,
+        beforeEnter: LoginGuard
     },
 
     //homepage
     {
-        path : '',
-        name : 'home',
-        component : Home,
+        path: '',
+        name: 'home',
+        component: Home,
         beforeEnter: AuthGuard
     },
 
     //user
     {
-        path : '/user',
-        name : 'userIndex',
-        component : Index,
-        beforeEnter : AuthGuard,
+        path: '/user',
+        name: 'userIndex',
+        component: Index,
+        beforeEnter: AuthGuard,
     },
     {
-        path : '/user/:id',
-        name : 'userEdit',
-        component : Edit,
-        beforeEnter : AuthGuard,
+        path: '/user/:id',
+        name: 'userEdit',
+        component: Edit,
+        beforeEnter: AuthGuard,
     },
     {
-        path : '/user',
-        name : 'userCreate',
-        component : Create,
-        beforeEnter : AuthGuard,
+        path: '/user',
+        name: 'userCreate',
+        component: Create,
+        beforeEnter: AuthGuard,
     },
 
-    {path: '*', redirect : '/'}
+    {path: '*', redirect: '/'}
 
 ];

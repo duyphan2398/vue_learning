@@ -62,7 +62,7 @@
                 data.is_active = 1;
                 if (this.$route.name === 'userEdit') {
                     this.update(data);
-                }else{
+                } else {
                     this.create(data);
                 }
             },
@@ -70,7 +70,7 @@
                 await apiService.patch('users/' + this.$route.params.id,
                     data, {
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            'Authorization': 'Bearer ' + this.$store.getters.token
                         }
                     }).then(async () => {
                     this.$notification.success({
@@ -93,11 +93,11 @@
                     })
                 })
             },
-            async create(data){
+            async create(data) {
                 await apiService.post('users',
                     data, {
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            'Authorization': 'Bearer ' + this.$store.getters.token
                         }
                     }).then(async () => {
                     this.$notification.success({

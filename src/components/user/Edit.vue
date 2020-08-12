@@ -7,6 +7,7 @@
 <script>
     import {apiService} from "../../services/api.service";
     import Form from "./Form";
+    import {store} from "../../store/store";
 
     export default {
         name: "Edit",
@@ -19,12 +20,12 @@
                     include: 'roles',
                 },
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + store.getters.token
                 }
             }).then((res) => {
-                to.meta['user']  = res.data.data;
+                to.meta['user'] = res.data.data;
                 return next();
-            }).catch(()=>{
+            }).catch(() => {
 
             })
         }
