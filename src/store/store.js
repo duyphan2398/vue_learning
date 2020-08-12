@@ -15,6 +15,10 @@ export const store = new Vuex.Store({
         SET_TOKEN(state, token) {
             state.token = token;
             Cookie.set('token', token);
+        },
+        LOG_OUT(state){
+            state.token = null
+            Cookie.remove('token')
         }
     }
 })
