@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import {apiService} from "../services/api.service";
+    import Request from "../services/api.service.js";
 
     export default {
         name: "Login",
@@ -54,7 +54,7 @@
         methods: {
             async loginAction() {
                 try {
-                    await apiService.post('/auth/admin/login', {
+                    await Request.post('/auth/admin/login', {
                         login_id: this.login_id,
                         login_password: this.login_password
                     }).then((res) => {

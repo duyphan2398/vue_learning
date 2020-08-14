@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import {apiService} from "../../services/api.service";
+    import Request from "../../services/api.service";
 
     export default {
         name: "Form",
@@ -67,62 +67,53 @@
                 }
             },
             async update(data) {
-                await apiService.patch('users/' + this.$route.params.id,
-                    data, {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.$store.getters.token
-                        }
-                    }).then(async () => {
-                    this.$notification.success({
-                        message: 'Successfully',
-                        description: 'Update Successfully',
-                        placement: 'topRight',
-                        duration: 1,
-                        style: {
-                            'background': "#ca7474",
-                            'font-size': 'large',
-                            'width': '50%'
-                        }
-                    });
-                    await this.$router.push({name: 'userIndex'})
-                }).catch(() => {
-                    this.$notification.error({
-                        message: 'Fail',
-                        description: 'Update Fail',
-                        placement: 'topRight'
+                await Request.patch('users/' + this.$route.params.id, data)
+                    .then(async () => {
+                        this.$notification.success({
+                            message: 'Successfully',
+                            description: 'Update Successfully',
+                            placement: 'topRight',
+                            duration: 1,
+                            style: {
+                                'background': "#ca7474",
+                                'font-size': 'large',
+                                'width': '50%'
+                            }
+                        });
+                        await this.$router.push({name: 'userIndex'})
+                    }).catch(() => {
+                        this.$notification.error({
+                            message: 'Fail',
+                            description: 'Update Fail',
+                            placement: 'topRight'
+                        })
                     })
-                })
             },
             async create(data) {
-                await apiService.post('users',
-                    data, {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.$store.getters.token
-                        }
-                    }).then(async () => {
-                    this.$notification.success({
-                        message: 'Successfully',
-                        description: 'Create Successfully',
-                        placement: 'topRight',
-                        duration: 1,
-                        style: {
-                            'background': "#ca7474",
-                            'font-size': 'large',
-                            'width': '50%'
-                        }
-                    });
-                    await this.$router.push({name: 'userIndex'})
-                }).catch(() => {
-                    this.$notification.error({
-                        message: 'Fail',
-                        description: 'Create Fail',
-                        placement: 'topRight'
+                await Request.post('users', data)
+                    .then(async () => {
+                        this.$notification.success({
+                            message: 'Successfully',
+                            description: 'Create Successfully',
+                            placement: 'topRight',
+                            duration: 1,
+                            style: {
+                                'background': "#ca7474",
+                                'font-size': 'large',
+                                'width': '50%'
+                            }
+                        });
+                        await this.$router.push({name: 'userIndex'})
+                    }).catch(() => {
+                        this.$notification.error({
+                            message: 'Fail',
+                            description: 'Create Fail',
+                            placement: 'topRight'
+                        })
                     })
-                })
             }
 
         }
-
     }
 </script>
 

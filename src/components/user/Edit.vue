@@ -5,9 +5,8 @@
 </template>
 
 <script>
-    import {apiService} from "../../services/api.service";
+    import Request from "../../services/api.service";
     import Form from "./Form";
-    import {store} from "../../store/store";
 
     export default {
         name: "Edit",
@@ -15,18 +14,12 @@
             Form
         },
         async beforeRouteEnter(to, from, next) {
-            await apiService.get('users/' + to.params.id, {
-                params: {
-                    include: 'roles',
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + store.getters.token
-                }
+            await Request.get('users/' + to.params.id, {
+                include: 'roles',
             }).then((res) => {
                 to.meta['user'] = res.data.data;
                 return next();
             }).catch(() => {
-
             })
         }
     }

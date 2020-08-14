@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import {apiService} from "../../services/api.service";
+    import Request from "../../services/api.service";
     import {store} from "../../store/store";
 
     export default {
@@ -60,15 +60,10 @@
             }
         },
         async beforeRouteEnter(to, from, next) {
-            await apiService.get('users', {
-                params: {
-                    per_page: 0,
-                    'include': 'prefecture',
-                    'sortBy[updated_at]': 'desc'
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + store.getters.token
-                }
+            await Request.get('users', {
+                per_page: 0,
+                'include': 'prefecture',
+                'sortBy[updated_at]': 'desc'
             }).then((res) => {
                 return next((vm) => {
                     vm.userList = res.data.data
@@ -80,35 +75,28 @@
                 this.$router.push('user/' + id)
             },
             async handleDelete(id) {
-                await apiService.delete('users/' + id, {
-                    headers: {
-                        'Authorization': 'Bearer ' + store.getters.token
-                    }
-                }).then(async () => {
-                    this.$notification.success({
-                        message: 'Successfully',
-                        description: 'Delete Successfully',
-                        placement: 'topRight'
-                    });
-                    await apiService.get('users', {
-                        params: {
+                await Request.delete('users/' + id)
+                    .then(async () => {
+                        this.$notification.success({
+                            message: 'Successfully',
+                            description: 'Delete Successfully',
+                            placement: 'topRight'
+                        });
+                        return await Request.get('users', {
                             per_page: 0,
                             'include': 'prefecture',
                             'sortBy[updated_at]': 'desc'
-                        },
-                        headers: {
-                            'Authorization': 'Bearer ' + store.getters.token
-                        }
+                        })
                     }).then((res) => {
                         this.userList = res.data.data
                     })
-                }).catch(() => {
-                    this.$notification.error({
-                        message: 'Fail',
-                        description: 'Delete Fail',
-                        placement: 'topRight'
-                    });
-                })
+                    .catch(() => {
+                        this.$notification.error({
+                            message: 'Fail',
+                            description: 'Delete Fail',
+                            placement: 'topRight'
+                        });
+                    })
             }
         }
     }
