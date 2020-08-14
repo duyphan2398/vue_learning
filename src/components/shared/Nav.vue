@@ -1,20 +1,22 @@
 <template>
     <div>
-        <template v-if="this.$store.getters.token ? (true) : (false)" >
+        <template v-if="this.$store.getters.token ? (true) : (false)">
             <router-link
                     tag="a"
                     :to="{name : 'home'}"
                     :active-class="'active'"
                     exact
             >Home
-            </router-link>  |
+            </router-link>
+            |
             <router-link
                     tag="a"
                     :to="{name: 'userIndex'}"
                     :active-class="'active'"
                     exact
             >User List
-            </router-link> |
+            </router-link>
+            |
 
             <a href="#" @click.prevent="handelLogout">Logout</a>
         </template>
@@ -23,33 +25,23 @@
 </template>
 
 <script>
-    import {apiService} from "../../services/api.service";
+    import {store} from "../../store/store";
+    import notification from "../../mixins/noitice";
 
     export default {
         name: "Nav",
-        methods : {
+        methods: {
             async handelLogout() {
-                let self = this;
-                await apiService.delete('auth/admin/logout', {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.$store.getters.token
-                    }
-                }).then(async (res) => {
-                    await self.$store.commit('LOG_OUT');
-                    self.$notification.success({
-                        message: 'Successfully',
-                        description: 'Logout Successfully',
-                        placement: 'topRight',
-                        duration: 1,
-                        style: {
-                            'background': "#ca7474",
-                            'font-size': 'large',
-                            'width': '50%'
-                        }
-                    });
-                    await self.$router.push({name: 'login'})
-                })
-
+                try {
+                    await store.dispatch('logout')
+                        .then(() => {
+                            notification.method.onSuccess('Successfully', 'Logout Successfully');
+                            this.$router.push({name: 'login'})
+                        })
+                } catch (e) {
+                    notification.method.onError('Fail', 'Logout Fail');
+                    throw new Error('Something Wrong !')
+                }
             }
         }
     }
@@ -57,7 +49,8 @@
 
 <style scoped>
     .active {
-        background-color: red;
+        border: 2px solid aqua;
+        background-color: coral;
         color: #931f22;
     }
 </style>

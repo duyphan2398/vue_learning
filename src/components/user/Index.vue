@@ -30,11 +30,13 @@
                     {{user.tel}}
                 </td>
                 <td>
-                    <button
-                            class="btn btn-success m-2"
-                            @click="handleEdit(user.id)"
+                    <router-link
+                            tag="button"
+                            :to="{name : 'userEdit', params: { id: user.id}}"
+                            exact
+                            :class="'btn btn-success m-2'"
                     >Edit
-                    </button>
+                    </router-link>
 
                     <button
                             class="btn btn-danger m-2"
@@ -49,7 +51,6 @@
 </template>
 
 <script>
-    import Request from "../../services/api.service";
     import {store} from "../../store/store";
 
     export default {
@@ -60,43 +61,24 @@
             }
         },
         async beforeRouteEnter(to, from, next) {
-            await Request.get('users', {
-                per_page: 0,
-                'include': 'prefecture',
-                'sortBy[updated_at]': 'desc'
-            }).then((res) => {
-                return next((vm) => {
-                    vm.userList = res.data.data
-                })
-            })
+            let response = await store.dispatch('getUser');
+            to.meta['userList'] = response.data.data;
+            return next()
+        },
+        created() {
+            this.userList = this.$route.meta['userList']
         },
         methods: {
-            handleEdit(id) {
-                this.$router.push('user/' + id)
-            },
             async handleDelete(id) {
-                await Request.delete('users/' + id)
-                    .then(async () => {
-                        this.$notification.success({
-                            message: 'Successfully',
-                            description: 'Delete Successfully',
-                            placement: 'topRight'
-                        });
-                        return await Request.get('users', {
-                            per_page: 0,
-                            'include': 'prefecture',
-                            'sortBy[updated_at]': 'desc'
-                        })
-                    }).then((res) => {
-                        this.userList = res.data.data
-                    })
-                    .catch(() => {
-                        this.$notification.error({
-                            message: 'Fail',
-                            description: 'Delete Fail',
-                            placement: 'topRight'
-                        });
-                    })
+                try {
+                    debugger
+                    await store.dispatch('deleteUser', id)
+                    let userList = await store.dispatch('getUser')
+                    this.userList = userList.data.data
+                } catch (e) {
+                    throw new Error('Something Fail')
+                }
+
             }
         }
     }

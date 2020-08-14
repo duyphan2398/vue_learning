@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import Request from "../../services/api.service";
+    import {store} from "../../store/store";
     import Form from "./Form";
 
     export default {
@@ -14,13 +14,9 @@
             Form
         },
         async beforeRouteEnter(to, from, next) {
-            await Request.get('users/' + to.params.id, {
-                include: 'roles',
-            }).then((res) => {
-                to.meta['user'] = res.data.data;
-                return next();
-            }).catch(() => {
-            })
+            let user = await store.dispatch('getSpecialUser', to.params.id);
+            to.meta['user'] = user.data.data;
+            return next();
         }
     }
 </script>

@@ -24,10 +24,6 @@
                 >
             </div>
 
-            <div class="mb-2 text-danger"
-                 v-text="error"
-            ></div>
-
             <button
                     type="submit"
                     class="btn btn-primary"
@@ -54,17 +50,14 @@
         methods: {
             async loginAction() {
                 try {
-                    await Request.post('/auth/admin/login', {
+                    await this.$store.dispatch('login', {
                         login_id: this.login_id,
-                        login_password: this.login_password
-                    }).then((res) => {
-                        this.$store.commit('SET_TOKEN', res.data.token)
-                    });
+                            login_password: this.login_password
+                    })
                     await this.$router.push({name: 'home'});
                 } catch (e) {
                     this.login_id = '';
                     this.login_password = '';
-                    this.error = e.message;
                 }
 
             }

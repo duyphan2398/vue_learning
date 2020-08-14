@@ -16,17 +16,17 @@ apiService.interceptors.request.use(
     }
 )
 
-export default  Request = {
+export default Request = {
     get(path, params) {
         return apiService.get(path, {params});
     },
-    post(path, params){
+    post(path, params) {
         return apiService.post(path, params);
     },
-    patch(path, params){
+    patch(path, params) {
         return apiService.patch(path, params);
     },
-    delete(path){
+    delete(path) {
         return apiService.delete(path);
     }
 };

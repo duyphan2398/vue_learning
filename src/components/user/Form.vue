@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import Request from "../../services/api.service";
+    import {store} from "../../store/store";
 
     export default {
         name: "Form",
@@ -67,52 +67,13 @@
                 }
             },
             async update(data) {
-                await Request.patch('users/' + this.$route.params.id, data)
-                    .then(async () => {
-                        this.$notification.success({
-                            message: 'Successfully',
-                            description: 'Update Successfully',
-                            placement: 'topRight',
-                            duration: 1,
-                            style: {
-                                'background': "#ca7474",
-                                'font-size': 'large',
-                                'width': '50%'
-                            }
-                        });
-                        await this.$router.push({name: 'userIndex'})
-                    }).catch(() => {
-                        this.$notification.error({
-                            message: 'Fail',
-                            description: 'Update Fail',
-                            placement: 'topRight'
-                        })
-                    })
+                await store.dispatch('updateUser',this.$route.params.id ,data)
+                await this.$router.push({name: 'userIndex'})
             },
             async create(data) {
-                await Request.post('users', data)
-                    .then(async () => {
-                        this.$notification.success({
-                            message: 'Successfully',
-                            description: 'Create Successfully',
-                            placement: 'topRight',
-                            duration: 1,
-                            style: {
-                                'background': "#ca7474",
-                                'font-size': 'large',
-                                'width': '50%'
-                            }
-                        });
-                        await this.$router.push({name: 'userIndex'})
-                    }).catch(() => {
-                        this.$notification.error({
-                            message: 'Fail',
-                            description: 'Create Fail',
-                            placement: 'topRight'
-                        })
-                    })
+                await store.dispatch('createUser', data)
+                await this.$router.push({name: 'userIndex'})
             }
-
         }
     }
 </script>
