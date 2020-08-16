@@ -4,7 +4,9 @@ import Index from "./components/user/Index.vue";
 import Edit from "./components/user/Edit.vue";
 import {AuthGuard} from "./guards/AuthGuard";
 import {LoginGuard} from "./guards/LoginGuard";
+import Error404 from "./pages/Error404.vue";
 import Create from "./components/user/Create";
+
 
 export const routes = [
     //login
@@ -43,6 +45,11 @@ export const routes = [
         beforeEnter: AuthGuard,
     },
 
-    {path: '*', redirect: '/'}
-
+    /*Error*/
+    {
+        path: '/404',
+        name: 'error404',
+        component: Error404,
+        beforeEnter: AuthGuard,
+    }
 ];

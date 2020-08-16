@@ -20,7 +20,6 @@ export const store = new Vuex.Store({
             Cookie.set('token', token)
         },
         LOG_OUT(state) {
-            console.log("2.5");
             state.token = null
             Cookie.remove('token')
         }
@@ -39,7 +38,6 @@ export const store = new Vuex.Store({
         logout({commit}) {
             return Request.delete('auth/admin/logout')
                 .then(() => {
-                    console.log("1")
                     return commit('LOG_OUT')
                 })
         },

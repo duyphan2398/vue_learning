@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 Vue.use(Antd)
 
 
-const router = new VueRouter({
+export const router = new VueRouter({
     mode: 'history',
     routes
 })

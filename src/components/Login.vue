@@ -36,8 +36,6 @@
 </template>
 
 <script>
-    import Request from "../services/api.service.js";
-
     export default {
         name: "Login",
         data() {
@@ -52,7 +50,7 @@
                 try {
                     await this.$store.dispatch('login', {
                         login_id: this.login_id,
-                            login_password: this.login_password
+                        login_password: this.login_password
                     })
                     await this.$router.push({name: 'home'});
                 } catch (e) {
