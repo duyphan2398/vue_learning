@@ -1,6 +1,6 @@
 <template>
     <div>
-        <template v-if="this.$store.getters.token ? (true) : (false)">
+        <template v-if="!!$store.getters.token">
             <router-link
                     tag="a"
                     :to="{name : 'home'}"

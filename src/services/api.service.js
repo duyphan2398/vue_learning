@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {store} from "../store/store";
 import {router} from "../main.js"
-
+import Cookie from 'js-cookie'
 const apiService = axios.create();
 
 apiService.interceptors.request.use(
@@ -9,8 +9,8 @@ apiService.interceptors.request.use(
         config.baseURL = 'http://applican.thanhtu150.top/api/cms';
         config.headers['Accept'] = '*/*';
         config.headers['Content-Type'] = 'application/json';
-        if (store.getters.token) {
-            config.headers['Authorization'] = `Bearer ${store.getters.token}`;
+        if (Cookie.get('token')) {
+            config.headers['Authorization'] = `Bearer ${Cookie.get('token')}`;
 
         }
         return config;
@@ -24,10 +24,11 @@ apiService.interceptors.response.use(
     async function (error) {
         let {status} = error.response;
         if (status === 401) {
+
             store.commit('LOG_OUT')
             await router.push({name: 'login'});
         }
-        if ([400, 403, 404, 429].includes(status)) {
+        if ([403, 404, 429].includes(status)) {
             await router.push({name: 'error404'});
         }
         return Promise.reject(error);

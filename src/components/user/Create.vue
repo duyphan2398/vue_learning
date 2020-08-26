@@ -1,18 +1,18 @@
 <template>
-    <div>
-        <Form></Form>
-    </div>
+  <div>
+    <Form></Form>
+  </div>
 </template>
 
 <script>
-    import Form from "./Form";
+  import Form from './Form'
 
-    export default {
-        name: "Create",
-        components: {
-            Form
-        },
-    }
+  export default {
+    name: 'Create',
+    components: {
+      Form,
+    },
+  }
 
 </script>
 
